@@ -24,5 +24,5 @@ npx sequelize-cli db:seed:all
 ## Start local server
 
 ``` bash
-npm start
+npm start A
 ```
