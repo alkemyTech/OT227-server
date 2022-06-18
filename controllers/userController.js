@@ -6,15 +6,19 @@ class UserController {
     try {
       const user = await User.findOne({ where: { email: body.email } });
       if (!user) {
-        return res.status(400).json({ ok: false });
+        return res
+          .status(400)
+          .json({ ok: false, message: 'Invalid credentials' });
       }
       const isMatch = await bcrypt.compare(body.password, user.password);
       if (!isMatch) {
-        return res.status(400).json({ ok: false });
+        return res
+          .status(400)
+          .json({ ok: false, message: 'Invalid credentials' });
       }
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } catch (err) {
-      res.status(500).json(err.name);
+      return res.status(500).json(err.name);
     }
   }
 }
