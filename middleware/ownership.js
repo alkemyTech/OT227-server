@@ -2,7 +2,6 @@
 const jwt            = require('jsonwebtoken');
 const { response }   = require('express');
 const { sequelize }  = require('../models/index');
-const { User }  = require('../models/user');
 const { QueryTypes } = require('sequelize');
 
 //Verify admin role
@@ -41,7 +40,6 @@ const adminRole = async (req, res = response, next) => {
             });
             
         }
-
 }
 
 module.exports = {
