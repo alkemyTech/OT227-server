@@ -1,22 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
+const Validator = require('../helpers/validator');
 
 router.post(
   '/login',
   [
     body('email').not().isEmpty().isEmail(),
     body('password').not().isEmpty(),
-    (req, res, next) => {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return res.status(400).json(errors);
-      }
-
-      next();
-    },
+    Validator.validateFields,
   ],
   UserController.login
 );
