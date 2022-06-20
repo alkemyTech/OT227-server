@@ -1,41 +1,45 @@
 'use strict';
 const jwt            = require('jsonwebtoken');
 const { response }   = require('express');
-const { User }  = require('../models/user');
+const { User }  = require('../models');
+const httpStatus = require('../helpers/httpStatus');
 
-const adminRole = async (req, res = response, next) => {
+class Role {
 
-        const token = req.header('x-token');
+  static async adminRole( req, res = response) {
 
-        if ( !token ){
-            return res.status(401).json({
-                msg: 'Not has token in the request'
-            });
-        }
+    const token = req.header('x-token');
 
-        try {
+      if ( !token ){
+        return res.status(httpStatus.UNAUTHORIZED).json({
+          msg: 'Not has token in the request'
+        });
+      }
 
-            const { userId } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
+      const { userId } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
+        
+      try {
+      
+        const users = await User.findByPk( userId );
+
+        if(!users){
+          return res.status( httpStatus.FORBIDDEN ).json({
+            msg: 'User not found'
+          } 
+         )}      
+
+        return res.status( httpStatus.OK ).json({
+          msg: 'User authorizaded'
+        });
             
-            const users = await User.findByPk(2);
+      } catch (err) {
 
-            if(!users){
-                return res.status(403).json({
-                    msg: 'User not found with userId'
-                } 
-            )}       
-
-            next();
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+          msg: 'Token not valid'
+        });
             
-        } catch (err) {
-
-            res.status(401).json({
-                msg: 'token not valid'
-            });
-            
-        }
+      }
+}
 }
 
-module.exports = {
-    adminRole
-}
+module.exports = Role;
