@@ -23,6 +23,29 @@ class UserController {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err.name);
     }
   }
+
+  static async deleteUserById(req,res){
+
+    try{  
+
+      const deletedUser = await User.destroy({ where: { id: req.params.id}});
+
+      if(deletedUser){
+
+        return res.status(httpStatus.OK).json({ message: "User deleted succesfully"});
+
+      }
+
+      return res.status(httpStatus.NOT_FOUND).json({ message: "User not found"});
+      
+    }catch(err){
+
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message});
+
+    }
+
+  }
+
 }
 
 module.exports = UserController;
