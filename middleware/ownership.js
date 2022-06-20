@@ -34,7 +34,7 @@ class Role {
             
       } catch (err) {
 
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
           msg: 'Token not valid'
         });
             
