@@ -1,3 +1,3 @@
-const { Activity } = require('../models');
+class activityController {}
 
-module.exports = {};
+module.exports = activityController;
