@@ -1,4 +1,3 @@
-//const { category } = require('../models');
+class categoryController {}
 
-
-module.exports = {}
+module.exports = categoryController;
