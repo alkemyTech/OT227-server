@@ -1,36 +1,41 @@
 'use strict';
 const jwt            = require('jsonwebtoken');
 const { response }   = require('express');
-const { User }  = require('../models');
+const { Role }  = require('../models');
 const httpStatus = require('../helpers/httpStatus');
 
-class Role {
+class Roles {
 
-  static async adminRole( req, res = response) {  
+  static async adminRole( req, res = response, next) {  
 
     const token = req.headers.authorization.split(" ")[1];
 
-    if ( !token ){
+    const { userId } = req.params;
+
+    if ( !token && !userId ){
       return res.status(httpStatus.UNAUTHORIZED).json({
-        msg: 'Not has token in the request'
+        msg: 'Not has token or userId in the request'
       });
     }
+  
+    const { id, roleId } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
 
-    const { id } = jwt.verify( token, process.env.SECRETORPRIVATEKEY );
+    if(userId !== id){
+      return res.status(httpStatus.UNAUTHORIZED).json({
+        msg: 'User not authorized for this action' 
+      }) 
+    }
         
-    const users = await User.findByPk( id );
-
-    if(!users){
-      return res.status( httpStatus.FORBIDDEN ).json({
-        msg: 'User not found'
-      } 
-    )}      
-
-    return res.status( httpStatus.OK ).json({
-      msg: 'User authorizaded'
-    });          
-      
+    const roleDB = await Role.findByPk( roleId );
+    if(!roleDB){
+      return res.status(httpStatus.NOT_FOUND).json({
+        msg: 'Role not found' 
+      }) 
+    }
+    const role = 'Admin';
+    
+    if(roleDB.name === role){return next();}
   }
 }
 
-module.exports = Role;
+module.exports = Roles;
