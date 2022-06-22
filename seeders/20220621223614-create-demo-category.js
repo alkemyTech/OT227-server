@@ -12,14 +12,14 @@ module.exports = {
      * }], {});
      */
     //bulkinsert
-    await queryInterface.bulkInsert("categories", [
+    await queryInterface.bulkInsert("Categories", [
       {
-        name: "Food",
+        name: "Novedades",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        name: "Drink",
+        name: "Informacion",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
