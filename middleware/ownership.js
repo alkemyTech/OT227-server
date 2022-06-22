@@ -6,13 +6,17 @@ const httpStatus = require('../helpers/httpStatus');
 
 class Roles {
 
+  static get admin() {
+    return 'Admin'
+  }
+
   static async adminRole( req, res = response, next) {  
 
     const token = req.headers.authorization.split(" ")[1];
 
     const { userId } = req.params;
 
-    if ( !token && !userId ){
+    if ( !token || !userId ){
       return res.status(httpStatus.UNAUTHORIZED).json({
         msg: 'Not has token or userId in the request'
       });
@@ -24,17 +28,16 @@ class Roles {
       return res.status(httpStatus.UNAUTHORIZED).json({
         msg: 'User not authorized for this action' 
       }) 
+    } else {
+      const roleDB = await Role.findByPk( roleId );
+      if(!roleDB){
+        return res.status(httpStatus.NOT_FOUND).json({
+          msg: 'Role not found' 
+        }) 
+      }
+      
+      if(roleDB.name === Roles.admin){return next();}
     }
-        
-    const roleDB = await Role.findByPk( roleId );
-    if(!roleDB){
-      return res.status(httpStatus.NOT_FOUND).json({
-        msg: 'Role not found' 
-      }) 
-    }
-    const role = 'Admin';
-    
-    if(roleDB.name === role){return next();}
   }
 }
 
