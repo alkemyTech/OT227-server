@@ -14,4 +14,19 @@ router.post(
   UserController.login
 );
 
+router.post(
+  '/register',
+  [
+    body('firstName').not().isEmpty(),
+    body('lastName').not().isEmpty(),
+    body('email').not().isEmpty().isEmail(),
+    body(
+      'password',
+      'Password must contain at least 8 characters, uppercase, lowercase, number and a symbol'
+    ).isStrongPassword(),
+    Validator.validateFields,
+  ],
+  UserController.register
+);
+
 module.exports = router;
