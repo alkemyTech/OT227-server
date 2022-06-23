@@ -24,28 +24,50 @@ class UserController {
     }
   }
 
-  static async deleteUserById(req,res){
+  static async deleteUserById(req, res) {
+    try {
+      const deletedUser = await User.destroy({ where: { id: req.params.id } });
 
-    try{  
-
-      const deletedUser = await User.destroy({ where: { id: req.params.id}});
-
-      if(deletedUser){
-
-        return res.status(httpStatus.OK).json({ message: "User deleted succesfully"});
-
+      if (deletedUser) {
+        return res
+          .status(httpStatus.OK)
+          .json({ message: 'User deleted succesfully' });
       }
 
-      return res.status(httpStatus.NOT_FOUND).json({ message: "User not found"});
-      
-    }catch(err){
-
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message});
-
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: 'User not found' });
+    } catch (err) {
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
     }
-
   }
 
+  static async userUpdate(req, res) {
+    const { id } = req.params;
+    const { body } = req;
+
+    if (body.password) {
+      const saltRound = 10;
+      const newPassword = await bcrypt.hash(body.password, saltRound);
+      body.password = newPassword;
+    }
+    try {
+      const user = await User.findOne({ where: { id } });
+      if (!user) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: 'User not found' });
+      }
+      await User.update(body, { where: { id } });
+      res.status(httpStatus.OK).json({ message: 'User updated' });
+    } catch (err) {
+      res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
+    }
+  }
 }
 
 module.exports = UserController;
