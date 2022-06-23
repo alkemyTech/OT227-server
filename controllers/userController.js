@@ -24,28 +24,46 @@ class UserController {
     }
   }
 
-  static async deleteUserById(req,res){
+  static async deleteUserById(req, res) {
+    try {
+      const deletedUser = await User.destroy({ where: { id: req.params.id } });
 
-    try{  
-
-      const deletedUser = await User.destroy({ where: { id: req.params.id}});
-
-      if(deletedUser){
-
-        return res.status(httpStatus.OK).json({ message: "User deleted succesfully"});
-
+      if (deletedUser) {
+        return res
+          .status(httpStatus.OK)
+          .json({ message: 'User deleted succesfully' });
       }
 
-      return res.status(httpStatus.NOT_FOUND).json({ message: "User not found"});
-      
-    }catch(err){
-
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message});
-
+      return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: 'User not found' });
+    } catch (err) {
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
     }
-
   }
 
+  static async register(req, res) {
+    const { firstName, lastName, email, password, image, roleId } = req.body;
+    const saltRounds = 10;
+    try {
+      const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        password: await bcrypt.hash(password, saltRounds),
+        image,
+        roleId,
+      });
+
+      return res.status(httpStatus.OK).json(user);
+    } catch (err) {
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
+    }
+  }
 }
 
 module.exports = UserController;
