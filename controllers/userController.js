@@ -60,8 +60,14 @@ class UserController {
           .status(httpStatus.NOT_FOUND)
           .json({ message: 'User not found' });
       }
-      await User.update(body, { where: { id } });
-      res.status(httpStatus.OK).json({ message: 'User updated' });
+      try{
+        await User.update(body, { where: { id } });
+        res.status(httpStatus.OK).json({ message: 'User updated' });
+      }catch(err){
+        res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
+      }
     } catch (err) {
       res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
