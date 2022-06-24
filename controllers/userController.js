@@ -45,9 +45,8 @@ class UserController {
   }
 
   static async userUpdate(req, res) {
-    const { id } = req.params;
+    const id  = parseInt(req.params.id);
     const { body } = req;
-
     if (body.password) {
       const saltRound = 10;
       const newPassword = await bcrypt.hash(body.password, saltRound);
