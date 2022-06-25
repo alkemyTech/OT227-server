@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Slide', [{
+    await queryInterface.bulkInsert('Slides', [{
       organizationId: 1,
       text: 'Demo-text',
       imageUrl: 'https://www.a_random_url.com',
@@ -14,7 +14,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
 
-    await queryInterface.bulkDelete('Slide', null, {});
+    await queryInterface.bulkDelete('Slides', null, {});
 
   }
 };

@@ -73,6 +73,27 @@ class UserController {
         .json({ message: err.message });
     }
   }
+
+  static async register(req, res) {
+    const { firstName, lastName, email, password, image, roleId } = req.body;
+    const saltRounds = 10;
+    try {
+      const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        password: await bcrypt.hash(password, saltRounds),
+        image,
+        roleId,
+      });
+
+      return res.status(httpStatus.OK).json(user);
+    } catch (err) {
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
+    }
+  }
 }
 
 module.exports = UserController;
