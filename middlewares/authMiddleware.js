@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-class authenticate {
-  constructor(req, res, next) {
+class Authenticate {
+  static validate(req, res, next) {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({
@@ -19,6 +19,6 @@ class authenticate {
 }
 
 module.exports = {
-  authenticate,
+  Authenticate,
 };
 
