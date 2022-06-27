@@ -1,7 +1,6 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
-const { sendMail } = require('../services/mailService');
 
 class UserController {
   static async login(req, res) {
@@ -66,7 +65,7 @@ class UserController {
         .json({ message: err.message });
     }
 
-    sendMail(email, process.env.HOST_EMAIL, process.env.WELCOME_SUBJECT, firstName);
+    
 
     return res.status(httpStatus.OK).json(user);
   }
