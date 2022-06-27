@@ -44,6 +44,26 @@ class UserController {
     }
   }
 
+  static async getAllUsers(req, res) {
+
+    try {
+
+      const users = await User.findAll();
+
+      return res
+        .status(httpStatus.OK)
+        .json(users);
+
+    } catch (err) {
+
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
+
+    }
+
+  }
+
   static async register(req, res) {
     const { firstName, lastName, email, password, image, roleId } = req.body;
     const saltRounds = 10;
