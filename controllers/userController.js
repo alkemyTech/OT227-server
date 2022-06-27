@@ -45,13 +45,15 @@ class UserController {
   }
 
   static async userUpdate(req, res) {
-    const id  = parseInt(req.params.id);
+    const id = parseInt(req.params.id);
     const { body } = req;
+
     if (body.password) {
       const saltRound = 10;
       const newPassword = await bcrypt.hash(body.password, saltRound);
       body.password = newPassword;
     }
+
     try {
       const user = await User.findOne({ where: { id } });
       if (!user) {
@@ -59,16 +61,17 @@ class UserController {
           .status(httpStatus.NOT_FOUND)
           .json({ message: 'User not found' });
       }
-      try{
-        await User.update(body, { where: { id } });
-        res.status(httpStatus.OK).json({ message: 'User updated' });
-      }catch(err){
-        res
+    } catch (er) {
+      return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ message: err.message });
-      }
+        .json({ message: er.message });
+    }
+
+    try {
+      await User.update(body, { where: { id } });
+      res.status(httpStatus.OK).json({ message: 'User updated' });
     } catch (err) {
-      res
+      return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: err.message });
     }
