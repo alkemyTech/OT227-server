@@ -6,8 +6,8 @@ module.exports = {
       firstName: 'Demo user firstName',
       lastName: 'Demo user lastName',
       email: 'demoEmail@demo.com',
-      //Password not encrypted
-      password: 'Some_password1234',
+      //Password here is: password123, encrypted here https://bcrypt-generator.com/ with 10 salt rounds
+      password: '$2a$10$RnLMOugaYvgEKYk/GZ5BZe1Y82GrmMM.DcW./MHLKP8aS4xin/SA6',
       roleId: 1,
       photo: 'https://www.a_random_url.com',
       createdAt: new Date,
