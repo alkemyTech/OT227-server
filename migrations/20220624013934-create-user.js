@@ -10,18 +10,22 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING,
+        allowNull: false
       },
       lastName: {
         type: Sequelize.STRING,
+        allowNull: false
       },
       email: {
         type: Sequelize.STRING,
         unique: true,
+        allowNull: false
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false
       },
-      image: {
+      photo: {
         type: Sequelize.STRING,
       },
       roleId: {
@@ -31,7 +35,7 @@ module.exports = {
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'RESTRICT',
       },
       deletedAt: {
         type: Sequelize.DATE,
@@ -48,5 +52,9 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Users');
+    await queryInterface.removeColumn(
+      'Users',
+      'roleId'
+    );
   },
 };
