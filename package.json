@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "nodemon": "^2.0.18",
     "sequelize-cli": "^6.2.0"
   }
 }
