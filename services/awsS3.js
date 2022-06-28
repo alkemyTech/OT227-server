@@ -10,7 +10,7 @@ class S3UploadImages {
     });
   }
 
-  uploadImage(name, image) {
+  async uploadImage(name, image) {
     
     const fileContent = fs.readFileSync(image);
 
@@ -19,8 +19,8 @@ class S3UploadImages {
       Key: name, 
       Body: fileContent
     };
-
-    return new Promise((resolve, rejects) => {
+    
+    return await new Promise((resolve, rejects) => {
      try {
       this.s3.upload(params).promise().then((data) => {resolve(data.Location)});
      } catch (error) {
