@@ -7,6 +7,7 @@ const Validator = require('../helpers/validator');
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
+const CheckRoleId = require('../middleware/checkRole');
 
 router.delete('/:id', UserController.deleteUserById);
 router.patch('/:id', [
@@ -19,5 +20,7 @@ router.patch('/:id', [
   ).isStrongPassword().optional(),
   Validator.validateFields,
 ],UserController.userUpdate);
+
+router.get('/', CheckRoleId.isAdmin, UserController.getAllUsers);
 
 module.exports = router;
