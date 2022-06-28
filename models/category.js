@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true 
       },
       image: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1234),
       allowNull: true
       },
       deletedAt: {
