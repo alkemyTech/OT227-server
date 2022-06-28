@@ -1,4 +1,3 @@
-//create a sequlize model to represent a category,with an ID not null auto incremental with softdeletes paranoid and timestamps
 module.exports = function(sequelize, DataTypes) {
   const Category = sequelize.define('Category', {
       id: {
