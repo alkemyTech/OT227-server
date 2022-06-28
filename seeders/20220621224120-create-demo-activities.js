@@ -7,7 +7,6 @@ module.exports = {
       [
         {
           name: "Demo Activity",
-          //description: "This is a demo activity",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
