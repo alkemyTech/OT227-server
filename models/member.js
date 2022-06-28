@@ -13,23 +13,23 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       facebookUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234),
         allowNull: true,
       },
       instagramUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234),
         allowNull: true,
       },
       linkedinUrl: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234),
         allowNull: true,
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234),
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
     },

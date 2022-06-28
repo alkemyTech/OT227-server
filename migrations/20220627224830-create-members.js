@@ -17,19 +17,19 @@ module.exports = {
         allowNull: true,
       },
       instagramUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1234),
         allowNull: true,
       },
       linkedinUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1234),
         allowNull: true,
       },
       image: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1234),
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       createdAt: {
