@@ -1,35 +1,35 @@
 module.exports = function (sequelize, DataTypes) {
-  const Activity = sequelize.define(
-    "Activity",
-    {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
-      name: {
-        type: Sequelize.VARCHAR,
-        allowNull: false,
-      },
-      description: {
-        type: Sequelize.TEXT,
-      },
-      content: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-      },
-      image: {
-        type: Sequelize.VARCHAR,
-        allowNull: false,
-      },
+  const Activity = sequelize.define('Activity', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    content: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    image:
     {
-      paranoid: true,
-      timestamps: true,
-      underscored: true,
-      tableName: "activities",
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description:
+    {
+      type: DataTypes.STRING
     }
+  }, {
+    paranoid: true,
+    timestamps: true,
+    underscored: true,
+    tableName: "activities",
+  }
   );
+
   return Activity;
 };
