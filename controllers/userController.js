@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
+const generateToken = require('../helpers/generateToken');
 
 class UserController {
   static async login(req, res) {
@@ -109,8 +110,9 @@ class UserController {
         image,
         roleId,
       });
+      const token = generateToken.tokenSign(user);
 
-      return res.status(httpStatus.OK).json(user);
+      return res.status(httpStatus.OK).json(token);
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
