@@ -6,7 +6,8 @@ const {validateFields} = require('../helpers/validator');
 const {isAdmin}= require('../middleware/checkRole');
 
 router.post('/public',[
-    isAdmin,
+    isAdmin, 
+    body('id').not().isEmpty().isNumeric(),
     body('name').not().isEmpty().isString().optional(),
     body('image').not().isEmpty().isString().optional(),
     body('phone').not().isEmpty().isNumeric().optional(),
