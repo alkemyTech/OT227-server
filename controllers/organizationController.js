@@ -2,9 +2,9 @@ const { Organization } = require('../models');
 const httpStatus = require('../helpers/httpStatus');
 
 class OrganizationController {
-  static async updateOrganization(req, res){
+  static async update(req, res){
    const { id, name, image, phone, address } = req.body;
-   const organization = await Organization.findByPk(id);
+   const organization = await Organization.findOne({ where: { id } });
 
     if(!organization){
      return res.status(httpStatus.NOT_FOUND).json({
