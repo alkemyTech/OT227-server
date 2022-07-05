@@ -18,6 +18,31 @@ class NewsController {
         msg: 'News not found'
        });
  }
+ //create new news´
+ /*
+ example json to recibe from client:
+
+  {
+    "name": "title",
+    "description": "description",
+    "image": "image",
+    "content": "content",
+    "categoryId": 1,
+    "createdAt": "2020-06-22T12:55:38.000Z",
+    "updatedAt": "2020-06-22T12:55:38.000Z"
+  }
+
+ */
+  static async createNew (req, res){
+    try {
+      const newNews = await News.create(req.body);
+      return await res.status(httpStatus.OK).json(newNews);
+    } catch (error) {
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+        msg: error.message
+       });
+    }
+  }
 }
 
 module.exports = NewsController; 
