@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const categoriesRouter = require('./routes/categories');
+const newsRouter = require('./routes/news');
 const organizationRouter = require('./routes/organization');
 const slidesRouter = require('./routes/slides');
 
@@ -30,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/categories', categoriesRouter);
+app.use('/news', newsRouter);
 app.use('/organization', organizationRouter);
 app.use('/slides', slidesRouter);
 
