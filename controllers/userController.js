@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
+const { sendWelcomeEmail } = require('../services/mailService');
 
 class UserController {
   static async login(req, res) {
@@ -100,8 +101,10 @@ class UserController {
   static async register(req, res) {
     const { firstName, lastName, email, password, image, roleId } = req.body;
     const saltRounds = 10;
+    let user;
+
     try {
-      const user = await User.create({
+        user = await User.create({
         firstName,
         lastName,
         email,
@@ -110,12 +113,14 @@ class UserController {
         roleId,
       });
 
-      return res.status(httpStatus.OK).json(user);
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: err.message });
     }
+
+    sendWelcomeEmail(email,firstName);
+    return res.status(httpStatus.OK).json(user);
   }
 }
 
