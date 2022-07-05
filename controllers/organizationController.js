@@ -32,6 +32,15 @@ class OrganizationController {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg: error.message})
     }
   }
+
+  static async get(req, res){
+    try {
+      const organizations = await Organization.findAll({attributes: ['name','image','phone','address']});
+      return res.status(httpStatus.OK).json(organizations);
+    } catch (error) {
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({msg: error.message})
+    }
+  }
 }
 
 module.exports = OrganizationController;
