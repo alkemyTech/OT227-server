@@ -1,4 +1,5 @@
-const { Slide } = require('../models/slide');
+const { Slide } = require('../models');
+const httpStatus = require('../helpers/httpStatus');
 
 class SlideController {
   static async getAllSlides(req, res) {
