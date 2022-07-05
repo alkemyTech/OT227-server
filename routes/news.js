@@ -12,7 +12,7 @@ router.get('/:id',[
 ],getById);
 
 router.delete('/:id',[
-    //isAdmin,
+    isAdmin,
     param('id').isNumeric(),
     validateFields
 ],deleteById);
