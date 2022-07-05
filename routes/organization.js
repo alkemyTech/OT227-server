@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {body} = require('express-validator');
-const {update} = require('../controllers/organizationController');
+const {update, get} = require('../controllers/organizationController');
 const {validateFields} = require('../helpers/validator');
 const {isAdmin}= require('../middleware/checkRole');
 
@@ -14,5 +14,7 @@ router.post('/public',[
     body('address').not().isEmpty().isString().optional(),
     validateFields
 ],update);
+
+router.get('/public',get);
 
 module.exports = router;
