@@ -1,7 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
-const generateToken = require('../helpers/generateToken');
+//const generateToken = require('../helpers/generateToken');
 const { sendWelcomeEmail } = require('../services/mailService');
 
 class UserController {
