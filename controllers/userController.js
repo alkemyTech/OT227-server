@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
+const generateToken = require('../helpers/generateToken');
 const { sendWelcomeEmail } = require('../services/mailService');
 
 class UserController {
@@ -103,8 +104,9 @@ class UserController {
     const saltRounds = 10;
     let user;
 
+    
     try {
-        user = await User.create({
+      user = await User.create({
         firstName,
         lastName,
         email,
@@ -112,15 +114,15 @@ class UserController {
         image,
         roleId,
       });
-
     } catch (err) {
       return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ message: err.message });
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ message: err.message });
     }
-
+    const token = generateToken.tokenSign(user);
+    
     sendWelcomeEmail(email,firstName);
-    return res.status(httpStatus.OK).json(user);
+    return res.status(httpStatus.OK).json(token);
   }
 }
 
