@@ -2,8 +2,8 @@ var express = require("express");
 var router = express.Router();
 const { param, body } = require("express-validator");
 const { validateFields } = require("../helpers/validator");
-const { getById, createNew } = require("../controllers/newsController");
-const {isAdmin} = require('../middleware/checkRole');
+const { getById, createNew, deleteById } = require("../controllers/newsController");
+const { isAdmin } = require("../middleware/checkRole");
 
 router.post(
   "/",
@@ -21,11 +21,10 @@ router.post(
 
 router.get("/:id", [isAdmin, param("id").isNumeric(), validateFields], getById);
 
-module.exports = router;
-router.delete('/:id',[
-    isAdmin,
-    param('id').isNumeric(),
-    validateFields
-],deleteById);
+router.delete(
+    "/:id",
+    [isAdmin, param("id").isNumeric(), validateFields],
+    deleteById
+);
 
 module.exports = router;
