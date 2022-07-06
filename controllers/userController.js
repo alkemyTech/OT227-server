@@ -1,8 +1,10 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const httpStatus = require('../helpers/httpStatus');
-//const generateToken = require('../helpers/generateToken');
+const tokenManagement = require('../helpers/tokenManagement');
 const { sendWelcomeEmail } = require('../services/mailService');
+
+const STANDARD_USER=2;
 
 class UserController {
   static async login(req, res) {
@@ -100,11 +102,10 @@ class UserController {
   }
 
   static async register(req, res) {
-    const { firstName, lastName, email, password, image, roleId } = req.body;
+    const { firstName, lastName, email, password, image, roleId=STANDARD_USER } = req.body;
     const saltRounds = 10;
     let user;
 
-    
     try {
       user = await User.create({
         firstName,
@@ -119,7 +120,7 @@ class UserController {
       .status(httpStatus.INTERNAL_SERVER_ERROR)
       .json({ message: err.message });
     }
-    const token = generateToken.tokenSign(user);
+    const token = tokenManagement.tokenSign(user);
     
     sendWelcomeEmail(email,firstName);
     return res.status(httpStatus.OK).json(token);
