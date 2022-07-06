@@ -5,6 +5,7 @@ const CheckRoleId = require('../middleware/checkRole');
 
 router.get('/',CheckRoleId.isAdmin,categoryController.getAllCategories);
 router.delete('/:id',categoryController.deleteCategory);
+router.get('/:id', CheckRoleId.isAdmin,categoryController.getCategoryById);
 
-
+    
 module.exports = router;
