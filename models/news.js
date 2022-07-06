@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     
     static associate(models) {
       
-      this.belongsTo(models.Category, {foreignKey: 'CategoryId'});
+      this.belongsTo(models.Category, {foreignKey: 'categoryId'});
     }
   };
   News.init({
