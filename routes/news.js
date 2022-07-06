@@ -1,14 +1,30 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const { param } = require('express-validator');
-const {validateFields} = require('../helpers/validator');
-const {isAdmin} = require('../middleware/checkRole');
-const {getById} =require('../controllers/newsController');
+const { param, body } = require("express-validator");
+const { validateFields } = require("../helpers/validator");
+const { getById, createNew, deleteById } = require("../controllers/newsController");
+const { isAdmin } = require("../middleware/checkRole");
 
-router.get('/:id',[
+router.post(
+  "/",
+  [
     isAdmin,
-    param('id').isNumeric(),
-    validateFields
-],getById);
+    body("name").not().isEmpty().withMessage("name is required"),
+    body("description").not().isEmpty().withMessage("description is empty"),
+    body("image").not().isEmpty().withMessage("image is required"),
+    body("content").not().isEmpty().withMessage("content is required"),
+    body("categoryId").not().isEmpty().withMessage("categoryId is required"),
+    validateFields,
+  ],
+  createNew
+);
+
+router.get("/:id", [isAdmin, param("id").isNumeric(), validateFields], getById);
+
+router.delete(
+    "/:id",
+    [isAdmin, param("id").isNumeric(), validateFields],
+    deleteById
+);
 
 module.exports = router;
