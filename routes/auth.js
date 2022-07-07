@@ -20,6 +20,7 @@ router.post(
     body('firstName').not().isEmpty(),
     body('lastName').not().isEmpty(),
     body('email').not().isEmpty().isEmail(),
+    body('image').isURL().optional(),
     body(
       'password',
       'Password must contain at least 8 characters, uppercase, lowercase, number and a symbol'
@@ -30,3 +31,4 @@ router.post(
 );
 
 module.exports = router;
+

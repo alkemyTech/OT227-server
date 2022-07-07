@@ -7,14 +7,13 @@ module.exports = (sequelize, DataTypes) => {
     
     static associate(models) {
       
-      this.belongsTo(models.Categories, {foreignKey: 'CategoryId'});
+      this.belongsTo(models.Category, {foreignKey: 'categoryId'});
     }
   };
   News.init({
     name: DataTypes.STRING,
     content: DataTypes.STRING,
     image: DataTypes.STRING,
-    categoryId: DataTypes.INTEGER,
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
