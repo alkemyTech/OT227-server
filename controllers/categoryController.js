@@ -6,6 +6,19 @@ class CategoryController {
 
     static async updateCategoryById(req, res) {
 
+        const name = req.body.name || '';
+
+        const description = req.body.description || '';
+
+        const image = req.body.image || '';
+
+        if ((name === '' || description === '' || image === '') || (typeof (image) !== 'string' || typeof (description) !== 'string' || typeof (image) !== 'string')) {
+
+            return res.status(httpStatus.BAD_REQUEST);
+
+        }
+
+
         let category;
 
         try {
@@ -18,7 +31,7 @@ class CategoryController {
 
         try {
 
-            await category.set(req.body);
+            category.set(req.body);
 
             await category.save();
 
