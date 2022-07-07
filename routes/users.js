@@ -1,11 +1,22 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const UserController = require('../controllers/userController');
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const { body } = require('express-validator');
+const Validator = require('../helpers/validator');
+const CheckRoleId = require('../middleware/checkRole');
 
 router.delete('/:id', UserController.deleteUserById);
+router.patch('/:id', [
+  body('firstName').not().isEmpty().isString().optional(),
+  body('lastName').not().isEmpty().isString().optional(),
+  body('email').not().isEmpty().isEmail().optional(),
+  body(
+    'password',
+    'Password must contain at least 8 characters, uppercase, lowercase, number and a symbol'
+  ).isStrongPassword().optional(),
+  Validator.validateFields,
+], UserController.userUpdate);
+
+router.get('/', CheckRoleId.isAdmin, UserController.getAllUsers);
 
 module.exports = router;
