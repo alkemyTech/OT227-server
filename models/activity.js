@@ -27,7 +27,6 @@ module.exports = function (sequelize, DataTypes) {
     paranoid: true,
     timestamps: true,
     underscored: true,
-    tableName: "activities",
   }
   );
 
