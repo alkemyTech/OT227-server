@@ -1,16 +1,35 @@
 const { Category } = require("../models");
 const httpStatus = require("../helpers/httpStatus");
+const pagination = require('../helpers/pagination');
 
 class categoryController {
   static async getAllCategories(req, res) {
+
+    let page = req.query.page ? req.query.page :1;
+    let dataPerPage = 10;
+    let categories;
+
     try {
-      const categories = await Category.findAll({ attributes: ["name"] });
-      return res.status(httpStatus.OK).json(categories);
+      categories  = await Category.findAndCountAll({ 
+        attributes: ["name"], 
+        limit: dataPerPage,
+        offset:((page-1) * dataPerPage)
+      });
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: err.message });
     }
+
+    const result = pagination({
+      data: categories.rows,
+      count: categories.count,
+      page,
+      dataPerPage,
+    });
+
+    res.status(httpStatus.OK).json(result);
+
   }
 
   static async deleteCategory(req, res) {
