@@ -19,15 +19,9 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    description:
-    {
-      type: DataTypes.STRING
-    }
   }, {
     paranoid: true,
     timestamps: true,
-    underscored: true,
-    tableName: "activities",
   }
   );
 
