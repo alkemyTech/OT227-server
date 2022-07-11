@@ -17,6 +17,10 @@ const contactsRouter = require('./routes/contacts');
 const membersRouter = require('./routes/members');
 const slidesRouter = require('./routes/slides');
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerSetup = require('./docs/swaggerSetup');
+
 const app = express();
 app.use(cors());
 
@@ -40,6 +44,7 @@ app.use('/organization', organizationRouter);
 app.use('/contacts', contactsRouter);
 app.use('/members', membersRouter);
 app.use('/slides', slidesRouter);
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerJSDoc(swaggerSetup)));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
