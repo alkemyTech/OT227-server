@@ -1,10 +1,10 @@
-const { User } = require('../models');
-const bcrypt = require('bcrypt');
-const httpStatus = require('../helpers/httpStatus');
-const tokenManagement = require('../helpers/tokenManagement');
-const { sendWelcomeEmail } = require('../services/mailService');
+const { User } = require("../models");
+const bcrypt = require("bcrypt");
+const httpStatus = require("../helpers/httpStatus");
+const tokenManagement = require("../helpers/tokenManagement");
+const { sendWelcomeEmail } = require("../services/mailService");
 
-const STANDARD_USER=2;
+const STANDARD_USER = 2;
 
 class UserController {
   static async login(req, res) {
@@ -14,15 +14,17 @@ class UserController {
       if (!user) {
         return res
           .status(httpStatus.UNAUTHORIZED)
-          .json({ ok: false, message: 'Invalid credentials' });
+          .json({ ok: false, message: "Invalid credentials" });
       }
       const isMatch = await bcrypt.compare(body.password, user.password);
       if (!isMatch) {
         return res
           .status(httpStatus.UNAUTHORIZED)
-          .json({ ok: false, message: 'Invalid credentials' });
+          .json({ ok: false, message: "Invalid credentials" });
       }
-      return res.status(httpStatus.OK).json(user);
+      const token = tokenManagement.tokenSign(user);
+
+      return res.status(httpStatus.OK).json(token);
     } catch (err) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err.name);
     }
@@ -35,12 +37,12 @@ class UserController {
       if (deletedUser) {
         return res
           .status(httpStatus.OK)
-          .json({ message: 'User deleted succesfully' });
+          .json({ message: "User deleted succesfully" });
       }
 
       return res
         .status(httpStatus.NOT_FOUND)
-        .json({ message: 'User not found' });
+        .json({ message: "User not found" });
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -63,7 +65,7 @@ class UserController {
       if (!user) {
         return res
           .status(httpStatus.NOT_FOUND)
-          .json({ message: 'User not found' });
+          .json({ message: "User not found" });
       }
     } catch (er) {
       return res
@@ -73,7 +75,7 @@ class UserController {
 
     try {
       await User.update(body, { where: { id } });
-      res.status(httpStatus.OK).json({ message: 'User updated' });
+      res.status(httpStatus.OK).json({ message: "User updated" });
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
@@ -82,27 +84,26 @@ class UserController {
   }
 
   static async getAllUsers(req, res) {
-
     try {
-
       const users = await User.findAll();
 
-      return res
-        .status(httpStatus.OK)
-        .json(users);
-
+      return res.status(httpStatus.OK).json(users);
     } catch (err) {
-
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: err.message });
-
     }
-
   }
 
   static async register(req, res) {
-    const { firstName, lastName, email, password, image, roleId=STANDARD_USER } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      image,
+      roleId = STANDARD_USER,
+    } = req.body;
     const saltRounds = 10;
     let user;
 
@@ -117,12 +118,12 @@ class UserController {
       });
     } catch (err) {
       return res
-      .status(httpStatus.INTERNAL_SERVER_ERROR)
-      .json({ message: err.message });
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: err.message });
     }
     const token = tokenManagement.tokenSign(user);
-    
-    sendWelcomeEmail(email,firstName);
+
+    sendWelcomeEmail(email, firstName);
     return res.status(httpStatus.OK).json(token);
   }
 }
