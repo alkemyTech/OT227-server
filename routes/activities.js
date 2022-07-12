@@ -6,6 +6,6 @@ const { body } = require('express-validator');
 const { validateFields } = require('../helpers/validator');
 
 router.post('/', [body('name').not().isEmpty().isString(), body('content').not().isEmpty().isString(), validateFields], CheckRoleId.isAdmin, activityController.createActivity);
-
+router.put('/:id', CheckRoleId.isAdmin,activityController.modifyActiviy)
 
 module.exports = router;
