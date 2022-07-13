@@ -62,6 +62,39 @@ class NewsController {
       });
     }
   }
+
+  static async updateNewById(req,res){
+
+    let news;
+
+    const { id } = req.params;
+
+    try{
+
+      news = await News.findByPk(id);
+
+    } catch(err) {
+
+      return res.status(httpStatus.NOT_FOUND).json({ message: err.message });
+
+    }
+
+    try{
+
+      news.set(req.body);
+
+      await news.save();
+
+      return res.status(httpStatus.OK).json(news);
+
+    } catch(err) {
+
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
+
+    }
+
+  }
+
 }
 
 module.exports = NewsController;
