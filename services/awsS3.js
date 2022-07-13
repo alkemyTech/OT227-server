@@ -11,17 +11,22 @@ class S3UploadImages {
   }
 
   async uploadImage(name, image) {
-    // Read content from the file
+    
     const fileContent = fs.readFileSync(image);
 
-    // Setting up S3 upload parameters
     const params = {
       Bucket: process.env.AWS_BUCKET,
-      Key: name, // File name you want to save as in S3
+      Key: name, 
       Body: fileContent
     };
-
-    await this.s3.upload(params).promise().then(data => data.Location)
+    
+    return await new Promise((resolve, rejects) => {
+     try {
+      this.s3.upload(params).promise().then((data) => {resolve(data.Location)});
+     } catch (error) {
+      rejects(error);
+     }
+    });
   }
 }
 

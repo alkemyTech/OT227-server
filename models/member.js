@@ -32,10 +32,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      deletedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+      }
     },
     {
       paranoid: true,
-      underscored: true,
       timestamps: true,
       tableName: "members",
     }

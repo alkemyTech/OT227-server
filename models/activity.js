@@ -1,29 +1,29 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   const Activity = sequelize.define('Activity', {
     id: {
-      type: Sequelize.INTEGER,
+      type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false
-  },  
-  name: {
-      type: Sequelize.VARCHAR,
+    },
+    name: {
+      type: DataTypes.STRING,
       allowNull: false
-  },
-  content: {
-      type: Sequelize.TEXT,
+    },
+    content: {
+      type: DataTypes.STRING,
       allowNull: false
-  } ,
-  image:
-  {
-      type: Sequelize.VARCHAR,
+    },
+    image:
+    {
+      type: DataTypes.STRING,
       allowNull: false
-  }
+    },
   }, {
     paranoid: true,
     timestamps: true,
-    underscored: true,
-    tableName: 'activities'
-  });
+  }
+  );
+
   return Activity;
-}
+};
