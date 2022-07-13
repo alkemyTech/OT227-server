@@ -1,8 +1,35 @@
+
 const { Category } = require("../models");
 const httpStatus = require("../helpers/httpStatus");
 const pagination = require('../helpers/pagination');
 
 class categoryController {
+
+
+  static async updateCategoryById(req, res) {
+
+        let category;
+
+        try {
+
+            category = await Category.findByPk(req.params.id);
+
+        } catch (err) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: err.message });
+        }
+
+        try {
+
+            category.set(req.body);
+
+            await category.save();
+
+            return res.status(httpStatus.OK).json(category);
+
+        } catch (err) {
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
+        }
+
   static async getAllCategories(req, res) {
 
     let page = req.query.page ? req.query.page :1;
@@ -62,9 +89,11 @@ class categoryController {
 
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message })
 
+
         }
 
     }
+
 
   static async getCategoryById(req, res) {
     const { id } = req.params;
@@ -85,3 +114,4 @@ class categoryController {
 }
 
 module.exports = categoryController;
+
