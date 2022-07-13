@@ -1,4 +1,6 @@
 const { Comments } = require("../models");
+const httpStatus = require("../helpers/httpStatus");
+
 
 class CommentsController {
   static async createComment(req, res) {
@@ -9,12 +11,12 @@ class CommentsController {
         newsId,
         userId
       });
-      res.status(201).json({
+      res.status(httpStatus.OK).json({
         message: "Comment created successfully",
         data: newComment
       });
     } catch (error) {
-      res.status(500).json({
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
     }
