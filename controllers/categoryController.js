@@ -29,6 +29,7 @@ class categoryController {
         } catch (err) {
             return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
         }
+}
 
   static async getAllCategories(req, res) {
 
