@@ -6,13 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "user",
       });
-      
-      /* the comment belongs to a post
-      Comment.belongsTo(models.Post, {
-        foreignKey: 'postId'
+
+      Comment.belongsTo(models.News, {
+        foreignKey: "newsId",
       });
-      >>>Esto queda comentado porque entiendo que no existen los posts o serian las news?<<< No me reten por dejar comentarios en el PR jajaja
-      */
     }
   }
   Comment.init(
