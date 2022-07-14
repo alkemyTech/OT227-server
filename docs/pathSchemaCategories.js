@@ -74,7 +74,7 @@ const pathCategories = {
       },
       put: {
         tags: ["Category"],
-        summary: "Update a new category",
+        summary: "Update a category",
         requestBody: {
           required: true,
           content: {
@@ -86,8 +86,8 @@ const pathCategories = {
           }
         },
         responses: {
-          201: {
-            description: "New category was updated"
+          200: {
+            description: "Category was updated by ID"
           },
           404: {
             description: "Category not found"
