@@ -154,7 +154,7 @@ class UserController {
 
     try{
 
-      user = await User.findOne({ where: { id: jwt.id } });
+      user = await User.findOne({ where: { email: jwt.email } });
 
     }catch(err){
 
