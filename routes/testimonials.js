@@ -6,6 +6,7 @@ const { body } = require('express-validator');
 const { validateFields } = require('../helpers/validator');
 
 router.post('/', [
+    isAdmin,
     body('name').not().isEmpty().isString().withMessage('Not empty and should be a string'),
     body('content').not().isEmpty().isString().withMessage('Not empty and should be a string'),
     body('image').not().isEmpty().isString().optional(),
