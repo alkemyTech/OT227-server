@@ -31,6 +31,37 @@ class memberController {
         }
         return res.status(httpStatus.OK).json(member);
        }
+
+    static async deleteMemberById(req,res){
+        
+        let member;
+
+        const { id } = req.params;
+
+        try{
+
+            member = await Member.findByPk(id);
+
+        } catch(err) {
+
+            return res.status(httpStatus.NOT_FOUND).json({ message: err.message });
+
+        }
+
+        try{
+
+            await Member.destroy({ where: { id } });
+
+            return res.status(httpStatus.OK).json({ message : `Member: ${member.name} deleted succesfully` });
+
+        } catch(err) {
+
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
+
+        }
+
+    }
+
 }
 
 module.exports = memberController;
