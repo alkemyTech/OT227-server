@@ -2,6 +2,7 @@ const { Testimonials } = require("../models");
 const httpStatus = require("../helpers/httpStatus");
 
 class TestimonialsController {
+<<<<<<< HEAD
   static async update(req, res){
     const { name, image, content} = req.body; 
     const bodyUpdate = {
@@ -24,6 +25,17 @@ class TestimonialsController {
     return res.status(httpStatus.NOT_FOUND).json({
       msg: 'Testimonials not found'
     });
+=======
+  static async register(req, res) {     
+    const { name, content, image } = req.body;
+    let testimonials;
+    try {
+        testimonials = await Testimonials.create({name, content, image});
+    } catch (err) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message })
+    }
+    return res.status(httpStatus.CREATED).json(testimonials);
+>>>>>>> development
   }
 }
 
