@@ -1,5 +1,6 @@
 const {Contact} = require('../models/index');
 const httpStatus = require("../helpers/httpStatus");
+const {sendWelcomeEmail} = require('../services/mailService');
 
 class ContactsController {
   static async register(req,res){
@@ -17,6 +18,7 @@ class ContactsController {
      msg: error.message
     });
    }
+    sendWelcomeEmail(contact.email, contact.name);
    return res.status(httpStatus.OK).json(contact);
   }
 
