@@ -7,6 +7,7 @@ const { isAdmin } = require("../middleware/checkRole");
 
 router.get("/",isAdmin, getAll);
 router.post("/",[
+    isAdmin,
     body('name').not().isEmpty().isString(),
     body('image').not().isEmpty().isString(),
     body('facebookUrl').not().isEmpty().isString().optional(),
