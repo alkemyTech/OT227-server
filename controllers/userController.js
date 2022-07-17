@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const httpStatus = require("../helpers/httpStatus");
 const tokenManagement = require("../helpers/tokenManagement");
 const { sendWelcomeEmail } = require("../services/mailService");
+const { verify } = require("jsonwebtoken");
 
 const STANDARD_USER = 2;
 
@@ -126,6 +127,46 @@ class UserController {
     sendWelcomeEmail(email, firstName);
     return res.status(httpStatus.OK).json(token);
   }
+
+  static async getMyInfo(req,res){
+
+    const authorization = req.headers.authorization;
+
+    try{
+
+      if(!authorization){
+
+        throw new Error("Not logged in");
+
+      }
+
+    } catch(err) {
+
+      return res.status(httpStatus.UNAUTHORIZED).json({ message: err.message });
+
+    }
+
+    const token = authorization.split(" ")[1];
+
+    const jwt = verify(token, process.env.SECRET_JWT_KEY);
+
+    let user;
+
+    try{
+
+      user = await User.findOne({ where: { email: jwt.email } });
+
+    }catch(err){
+
+      return res.status(httpStatus.NOT_FOUND).json({ message: err.message });
+
+    }
+
+    return res.status(httpStatus.OK).json(user);
+
+  }
+
+
 }
 
 module.exports = UserController;
