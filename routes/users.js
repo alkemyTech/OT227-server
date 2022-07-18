@@ -5,8 +5,9 @@ const { body } = require('express-validator');
 const Validator = require('../helpers/validator');
 const CheckRoleId = require('../middleware/checkRole');
 
-router.delete('/:id', UserController.deleteUserById);
+router.delete('/:id', CheckRoleId.isAdmin, UserController.deleteUserById);
 router.patch('/:id', [
+  CheckRoleId.isAdmin,
   body('firstName').not().isEmpty().isString().optional(),
   body('lastName').not().isEmpty().isString().optional(),
   body('email').not().isEmpty().isEmail().optional(),

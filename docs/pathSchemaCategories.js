@@ -72,6 +72,36 @@ const pathCategories = {
           }
         ]
       },
+      put: {
+        tags: ["Category"],
+        summary: "Update a category",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                "$ref": "#/components/schemas/category"
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: "Category was updated by ID"
+          },
+          404: {
+            description: "Category not found"
+          },
+          500: {
+            description: "Internal server error"
+          }
+        },
+        security: [
+          {
+            bearerAuth: []
+          }
+        ]
+      },
       delete: {
         tags: ["Category"],
         summary: "Delete category by id",
