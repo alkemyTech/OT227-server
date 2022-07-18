@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
-
 const {deleteById, register} = require('../controllers/testimonialsController');
 const {isAdmin} = require('../middleware/checkRole');
-const { param, body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { validateFields } = require('../helpers/validator');
+
+router.put('/:id', [
+    isAdmin,
+    param('id').isInt().withMessage('Should be a number'),
+], update);
 
 router.delete('/:id', [
     isAdmin,
