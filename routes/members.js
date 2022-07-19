@@ -17,6 +17,7 @@ router.post("/",[
 ], register);
 
 router.put("/:id", [
+    isAdmin,
     param("id").isNumeric(),
     body("name").not().isEmpty().isString(),
     body("image").not().isEmpty().isString(),
