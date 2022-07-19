@@ -1,10 +1,11 @@
 require('dotenv').config();
 const path = require('path');
 
-const {pathCategories, schemaCategories} = require('./pathSchemaCategories');
+const { pathCategories, schemaCategories, pathCategoriesId } = require('./pathSchemaCategories');
+const { schemaNews, pathNewsId, pathNews } = require('./pathSchemaNews');
 
-const swaggerSetup =  { 
-  definition :{
+const swaggerSetup = {
+  definition: {
     openapi: "3.0.0",
     info: {
       title: "Documentation Group 227 API ",
@@ -16,8 +17,14 @@ const swaggerSetup =  {
         description: "Local dev"
       },
     ],
-    tags : ["Category"],
-    paths: pathCategories,
+    tags: ["Category", "New"],
+    paths: {
+      "/categories" : pathCategories,
+      "/categories/{id}" : pathCategoriesId,
+      "/news" : pathNews,
+      "/news/{id}" : pathNewsId
+    },
+
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -26,7 +33,10 @@ const swaggerSetup =  {
           in: "header"
         },
       },
-        schemas: schemaCategories,
+      schemas: {
+        category: schemaCategories,
+        new: schemaNews
+      },
     },
   },
   apis: [

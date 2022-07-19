@@ -2,11 +2,12 @@ var express = require("express");
 var router = express.Router();
 const { body, param } = require("express-validator");
 const { validateFields } = require("../helpers/validator");
-const { getAll, register, updateMemberById } = require("../controllers/memberController");
+const { getAll, register, deleteMemberById, updateMemberById} = require("../controllers/memberController");
 const { isAdmin } = require("../middleware/checkRole");
 
 router.get("/",isAdmin, getAll);
 router.post("/",[
+    isAdmin,
     body('name').not().isEmpty().isString(),
     body('image').not().isEmpty().isString(),
     body('facebookUrl').not().isEmpty().isString().optional(),
@@ -15,6 +16,7 @@ router.post("/",[
     body('description').not().isEmpty().isString().optional(),
     validateFields
 ], register);
+router.delete("/:id", [isAdmin, param("id").isNumeric(), validateFields], deleteMemberById);
 
 router.put("/:id", [
     isAdmin,
