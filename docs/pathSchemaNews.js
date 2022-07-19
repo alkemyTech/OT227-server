@@ -32,23 +32,6 @@ const schemaNews = {
 }
 
 const pathNews = {
-  get: {
-    tags: ["New"],
-    summary: "Get all news",
-    responses: {
-      200: {
-        description: "get all news"
-      },
-      500: {
-        description: "Internal server error"
-      }
-    },
-    security: [
-      {
-        bearerAuth: []
-      }
-    ]
-  },
   post: {
     tags: ["New"],
     summary: "Create a new New",
@@ -69,7 +52,12 @@ const pathNews = {
       500: {
         description: "Internal server error"
       }
-    }
+    },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   }
 }
 

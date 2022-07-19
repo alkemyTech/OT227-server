@@ -21,8 +21,8 @@ const swaggerSetup = {
     paths: {
       "/categories" : pathCategories,
       "/categories/{id}" : pathCategoriesId,
-      "/new" : pathNews,
-      "/new/{id}" : pathNewsId
+      "/news" : pathNews,
+      "/news/{id}" : pathNewsId
     },
 
     components: {
@@ -35,7 +35,7 @@ const swaggerSetup = {
       },
       schemas: {
         category: schemaCategories,
-        news: schemaNews
+        new: schemaNews
       },
     },
   },
