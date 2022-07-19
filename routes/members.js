@@ -15,6 +15,6 @@ router.post("/",[
     body('description').not().isEmpty().isString().optional(),
     validateFields
 ], register);
-router.delete("/:id", [param("id").isNumeric(), validateFields], deleteMemberById);
+router.delete("/:id", [isAdmin, param("id").isNumeric(), validateFields], deleteMemberById);
 
 module.exports = router;
