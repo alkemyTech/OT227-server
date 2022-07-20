@@ -10,10 +10,10 @@ class NewsController {
       });
     }
     try {
-      await news.destroy();
+      await News.destroy({where: {id:req.params.id}})
       return res
         .status(httpStatus.OK)
-        .json({ message: "User deleted succesfully" });
+        .json({ message: "New deleted succesfully" });
     } catch (error) {
       return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
         msg: error.message,
@@ -81,9 +81,7 @@ class NewsController {
 
     try{
 
-      news.set(req.body);
-
-      await news.save();
+      news = await News.update(req.body, {where : id})
 
       return res.status(httpStatus.OK).json(news);
 
