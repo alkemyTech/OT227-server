@@ -14,6 +14,7 @@ const userTest = {
     email:'user1@test.com',
 }
 const token = Object.values(tokenSign(userTest));
+const adminRole = 1;
 
 chai.use(chaiHttp);
 
@@ -53,7 +54,7 @@ describe('Test routes about users', function(){
                        .returns(Promise.resolve([true]));
         User.findOne = sandbox.stub()
                        .returns(Promise.resolve({
-                           roleId: 1
+                           roleId: adminRole
                        }));
         const response = await request(server)
                                .patch('/users/1')
