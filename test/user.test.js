@@ -6,9 +6,14 @@ const request = require('supertest');
 const server = require('../app');
 const { User } = require("../models");
 const httpStatus = require('../helpers/httpStatus');
-const expect = chai.expect;
+const {tokenSign} = require("../helpers/tokenManagement");
 
-const CheckRoleId = require('../middleware/checkRole');
+const expect = chai.expect;
+const userTest = {
+    name: 'test',
+    email:'user1@test.com',
+}
+const token = Object.values(tokenSign(userTest));
 
 chai.use(chaiHttp);
 
@@ -21,65 +26,64 @@ describe('Test routes about users', function(){
       });
     it("Get all users of DB", async function(){
       User.findAll = sandbox.stub()
+                     .returns(Promise.resolve(userTest));
+      User.findOne = sandbox.stub()
                      .returns(Promise.resolve({
-                        name: 'test'
+                         roleId: 1
                      }));
-      CheckRoleId.isAdmin = sandbox.stub()
-                            .returns(Promise.resolve(true));
       const response = await request(server)
                              .get('/users')
-                             .set("authorization", "Bearer token.")
-                             .expect(200);
-      const user = response.body;
-      console.log(user)      
+                             .set("authorization",  "Bearer " + token)
+                             .expect(httpStatus.OK);
+      const user = response.body;  
       expect(user).to.be.a('object');
-      expect(user.name).to.be.equal('test');
-      expect(response.status).to.be.equal(httpStatus.UNAUTHORIZED);      
+      expect(response.status).to.be.equal(httpStatus.OK);      
     });
         
     });
 
   describe('PATCH /users/:id', function(){
-    it("Update user in DB", async function(){
+    it("Update user in DB by ID", async function(){
       const sandbox = sinon.createSandbox();
       afterEach(() => {
         sinon.restore();
         sandbox.restore();
       });
-        User.findOne = sandbox.stub()
-                       .returns(Promise.resolve(true));
         User.update = sandbox.stub()
-                       .returns(Promise.resolve(true));
-        CheckRoleId.isAdmin = sandbox.stub()
-                              .returns(Promise.resolve(true));
+                       .returns(Promise.resolve([true]));
+        User.findOne = sandbox.stub()
+                       .returns(Promise.resolve({
+                           roleId: 1
+                       }));
         const response = await request(server)
                                .patch('/users/1')
+                               .set("authorization",  "Bearer " + token)
                                .expect(httpStatus.OK);
         const userCreated = response.body.message;
-        console.log(userCreated)
         expect(userCreated).to.be.equal('User updated');
         expect(response.status).to.be.equal(httpStatus.OK); 
     });
-    it("Update user in DB - Error", async function(){
+    it("Update user in DB by ID - Not Found Error", async function(){
         const sandbox = sinon.createSandbox();
         afterEach(() => {
           sinon.restore();
           sandbox.restore();
         });
-          User.findOne = sandbox.stub()
-                         .returns(Promise.resolve(false));
           User.update = sandbox.stub()
-                         .returns(Promise.resolve(true));
-          CheckRoleId.isAdmin = sandbox.stub()
-                                .returns(Promise.resolve(true));
+                         .returns(Promise.resolve(false));
+          User.findOne = sandbox.stub()
+                         .returns(Promise.resolve({
+                             roleId: 1
+                         }));
           const response = await request(server)
-                                 .patch('/users/1')
-                                 .expect(404);
+                                 .patch('/users/12121')
+                                 .set("authorization",  "Bearer " + token)
+                                 .expect(httpStatus.NOT_FOUND);
           expect(response.status).to.be.equal(httpStatus.NOT_FOUND); 
       });
   });
   describe('DELETE /users/:id', function(){
-    it("Delete user in DB", async function(){
+    it("Delete user in DB by ID", async function(){
       const sandbox = sinon.createSandbox();
       afterEach(() => {
         sinon.restore();
@@ -87,16 +91,19 @@ describe('Test routes about users', function(){
       });
         User.destroy = sandbox.stub()
                        .returns(Promise.resolve(true));
-        CheckRoleId.isAdmin = sandbox.stub()
-                              .returns(Promise.resolve(true));
+        User.findOne = sandbox.stub()
+                       .returns(Promise.resolve({
+                           roleId: 1
+                       }));
         const response = await request(server)
                                .delete('/users/1')
-                               .expect(200);
+                               .set("authorization",  "Bearer " + token)
+                               .expect(httpStatus.OK);
         const userCreated = response.body.message;
         expect(userCreated).to.be.equal('User deleted succesfully');
         expect(response.status).to.be.equal(httpStatus.OK); 
     });
-    it("Delete user in DB - Error", async function(){
+    it("Delete user in DB by ID - Not Found Error", async function(){
         const sandbox = sinon.createSandbox();
         afterEach(() => {
           sinon.restore();
@@ -104,11 +111,14 @@ describe('Test routes about users', function(){
         });
           User.destroy = sandbox.stub()
                          .returns(Promise.resolve(false));
-          CheckRoleId.isAdmin = sandbox.stub()
-                                .returns(Promise.resolve());
+          User.findOne = sandbox.stub()
+                         .returns(Promise.resolve({
+                             roleId: 1
+                         }));
           const response = await request(server)
                                  .delete('/users/1')
-                                 .expect(404);
+                                 .set("authorization",  "Bearer " + token)
+                                 .expect(httpStatus.NOT_FOUND);
           expect(response.status).to.be.equal(httpStatus.NOT_FOUND); 
       });
   });

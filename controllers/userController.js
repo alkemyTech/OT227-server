@@ -61,27 +61,22 @@ class UserController {
       body.password = newPassword;
     }
 
-    try {
-      const user = await User.findOne({ where: { id } });
-      if (!user) {
-        return res
-          .status(httpStatus.NOT_FOUND)
-          .json({ message: "User not found" });
-      }
-    } catch (er) {
-      return res
-        .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ message: er.message });
-    }
+    let userUpdated;
 
     try {
-      await User.update(body, { where: { id } });
-      res.status(httpStatus.OK).json({ message: "User updated" });
+      userUpdated = await User.update(body, { where: { id } });
     } catch (err) {
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: err.message });
     }
+
+    if(userUpdated[0]) {
+      return res.status(httpStatus.OK).json({ message: "User updated" });
+    }
+    return res
+        .status(httpStatus.NOT_FOUND)
+        .json({ message: "User not found" });
   }
 
   static async getAllUsers(req, res) {
