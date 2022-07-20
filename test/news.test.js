@@ -169,6 +169,13 @@ describe('Test routes for News', function () {
                 .set("authorization", "Bearer " + token)
                 .expect(httpStatus.OK);
             
+            const news = response.body;
+
+            expect(response.status).to.be.equal(httpStatus.OK);
+            expect(news.message).to.be.a('string');
+            
+            
+            
         });
         it("Throws error 401 - UNAUTHORIZED", async function () {
 
@@ -221,6 +228,11 @@ describe('Test routes for News', function () {
                 .send(newsTest)
                 .set("authorization", "Bearer " + token)
                 .expect(httpStatus.OK);
+            
+            const news = response.body;
+            
+            expect(news).to.be.a('object');
+            expect(response.status).to.be.equal(httpStatus.OK);
             
         });
         it("Throws error 401 - UNAUTHORIZED", async function () {
