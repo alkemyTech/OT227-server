@@ -81,7 +81,7 @@ class NewsController {
 
     try{
 
-      await News.update(req.body, {where : id})
+      news = await News.update(req.body, {where : id})
 
       return res.status(httpStatus.OK).json(news);
 
