@@ -6,7 +6,7 @@
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
-    "test" : "mocha"
+    "test": "nyc --reporter=text mocha --exit"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
@@ -26,12 +26,17 @@
     "mocha": "^10.0.0",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.3",
+    "nyc": "^15.1.0",
     "sequelize": "^6.3.5",
+    "sinon": "^14.0.0",
+    "supertest": "^6.2.4",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.18",
     "sequelize-cli": "^6.2.0"
   }

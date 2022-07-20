@@ -10,7 +10,7 @@ router.put('/:id', [body('name').not().isEmpty().isString(), body('description')
 router.post('/', [body('name').not().isEmpty().isString(), validateFields], CheckRoleId.isAdmin, categoryController.createCategory);
 router.get('/',[query('page').not().isEmpty().isInt({min:1}).optional(),CheckRoleId.isAdmin,
 validateFields],categoryController.getAllCategories);
-router.delete('/:id',categoryController.deleteCategory);
+router.delete('/:id',CheckRoleId.isAdmin, categoryController.deleteCategory);
 router.get('/:id',[CheckRoleId.isAdmin, param("id").isNumeric(), validateFields],categoryController.getCategoryById);
 
 
