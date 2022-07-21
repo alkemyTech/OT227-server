@@ -7,6 +7,7 @@ const { validateFields } = require("../helpers/validator");
 const CheckRoleId = require('../middleware/checkRole');
 
 router.post('/', [
+    CheckRoleId.isAdmin,
     body("name").not().isEmpty().isString().withMessage("name is required and should be a string"),
     body("email").not().isEmpty().isEmail().withMessage("email is required and should be a valid email"),
     body("phone").not().isEmpty().isNumeric().withMessage("phone should be a number and not empty").optional(),

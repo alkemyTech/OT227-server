@@ -30,5 +30,7 @@ router.post(
   UserController.register
 );
 
+router.get('/me', UserController.getMyInfo);
+
 module.exports = router;
 
